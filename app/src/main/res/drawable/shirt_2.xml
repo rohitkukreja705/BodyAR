@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="240dp"
+    android:viewportWidth="100"
+    android:viewportHeight="120">
+    <!-- torso + sleeves -->
+    <path
+        android:fillColor="@color/shirt_2"
+        android:pathData="M35,10 L20,0 L2,18 L14,34 L22,28 L22,115 L78,115 L78,28 L86,34 L98,18 L80,0 L65,10 C65,10 58,16 50,16 C42,16 35,10 35,10 Z" />
+    <!-- collar -->
+    <path
+        android:fillColor="#33000000"
+        android:pathData="M40,8 C43,14 57,14 60,8 L57,4 C54,9 46,9 43,4 Z" />
+</vector>

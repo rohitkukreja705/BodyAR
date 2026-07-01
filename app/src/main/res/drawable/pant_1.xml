@@ -1,0 +1,22 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="280dp"
+    android:viewportWidth="100"
+    android:viewportHeight="140">
+    <!-- waistband -->
+    <path
+        android:fillColor="@color/pant_1"
+        android:pathData="M10,0 L90,0 L88,20 L12,20 Z" />
+    <!-- left leg -->
+    <path
+        android:fillColor="@color/pant_1"
+        android:pathData="M12,20 L48,20 L46,138 L30,138 L26,60 L18,60 Z" />
+    <!-- right leg -->
+    <path
+        android:fillColor="@color/pant_1"
+        android:pathData="M52,20 L88,20 L82,60 L74,60 L70,138 L54,138 Z" />
+    <!-- center seam shadow -->
+    <path
+        android:fillColor="#26000000"
+        android:pathData="M48,20 L52,20 L52,60 L48,60 Z" />
+</vector>

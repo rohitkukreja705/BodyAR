@@ -1,0 +1,46 @@
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="bg_dark">#FF121212</color>
+    <color name="accent">#FF00E5A0</color>
+    <color name="accent_dark">#FF00B383</color>
+    <color name="sidebar_bg">#F0181818</color>
+    <color name="chip_selected">#FF00E5A0</color>
+    <color name="chip_unselected">#FF2A2A2A</color>
+    <color name="text_primary">#FFFFFFFF</color>
+    <color name="text_secondary">#FFB0B0B0</color>
+
+    <!-- Placeholder clothing palette (10 shirts) -->
+    <color name="shirt_1">#E53935</color>
+    <color name="shirt_2">#1E88E5</color>
+    <color name="shirt_3">#43A047</color>
+    <color name="shirt_4">#FDD835</color>
+    <color name="shirt_5">#8E24AA</color>
+    <color name="shirt_6">#FB8C00</color>
+    <color name="shirt_7">#00ACC1</color>
+    <color name="shirt_8">#3949AB</color>
+    <color name="shirt_9">#D81B60</color>
+    <color name="shirt_10">#6D4C41</color>
+
+    <!-- Placeholder clothing palette (10 pants) -->
+    <color name="pant_1">#263238</color>
+    <color name="pant_2">#37474F</color>
+    <color name="pant_3">#4E342E</color>
+    <color name="pant_4">#1A237E</color>
+    <color name="pant_5">#212121</color>
+    <color name="pant_6">#33691E</color>
+    <color name="pant_7">#BF360C</color>
+    <color name="pant_8">#004D40</color>
+    <color name="pant_9">#4A148C</color>
+    <color name="pant_10">#5D4037</color>
+
+    <!-- Placeholder sunglasses palette (8 styles) -->
+    <color name="glass_1">#000000</color>
+    <color name="glass_2">#3E2723</color>
+    <color name="glass_3">#37474F</color>
+    <color name="glass_4">#B71C1C</color>
+    <color name="glass_5">#0D47A1</color>
+    <color name="glass_6">#4A148C</color>
+    <color name="glass_7">#FFD700</color>
+    <color name="glass_8">#616161</color>
+</resources>

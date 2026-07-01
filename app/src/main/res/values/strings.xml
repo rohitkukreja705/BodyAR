@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">BodyAR Try-On</string>
+    <string name="capture">Capture</string>
+    <string name="shirts">Shirts</string>
+    <string name="pants">Pants</string>
+    <string name="sunglasses">Sunglasses</string>
+    <string name="clear">Clear</string>
+    <string name="open_sidebar">Browse items</string>
+    <string name="permission_needed">Camera permission is required to use BodyAR</string>
+    <string name="saved_toast">Photo saved to gallery</string>
+    <string name="no_person_detected">Stand fully in frame so your body can be detected</string>
+</resources>
