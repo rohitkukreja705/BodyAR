@@ -1,5 +1,6 @@
 package com.hftx.bodyar
 
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -8,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class ClothingAdapter(
     private var items: List<ClothingItem>,
-    private val onItemSelected: (ClothingItem) -> Unit
+    private val onItemSelected: (ClothingItem) -> Unit,
+    private val onItemLongPressed: ((ClothingItem) -> Unit)? = null
 ) : RecyclerView.Adapter<ClothingAdapter.ViewHolder>() {
 
     private var selectedId: String? = null
@@ -37,12 +39,27 @@ class ClothingAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        holder.image.setImageResource(item.drawableRes)
+
+        if (item.isCustom) {
+            val bmp = BitmapFactory.decodeFile(item.filePath)
+            if (bmp != null) holder.image.setImageBitmap(bmp) else holder.image.setImageResource(R.drawable.ic_close)
+        } else {
+            holder.image.setImageResource(item.drawableRes)
+        }
+
         holder.label.text = item.displayName
         holder.frame.isSelected = item.id == selectedId
+
         holder.itemView.setOnClickListener {
-            val newlySelected = if (selectedId == item.id) null else item
-            onItemSelected(newlySelected ?: item)
+            onItemSelected(item)
+        }
+        holder.itemView.setOnLongClickListener {
+            if (item.isCustom && onItemLongPressed != null) {
+                onItemLongPressed.invoke(item)
+                true
+            } else {
+                false
+            }
         }
     }
 

@@ -7,17 +7,18 @@ enum class ClothingCategory {
 }
 
 /**
- * A single selectable wardrobe item.
- *
- * [drawableRes] currently points at a generated placeholder vector asset
- * (see res/drawable/shirt_*.xml, pant_*.xml, glass_*.xml). For production
- * quality, replace these with transparent-background PNG/WebP garment
- * cutouts of the same naming pattern - no code changes needed, the
- * repository below just needs the resource id swapped.
+ * A single selectable wardrobe item. Exactly one of [drawableRes] / [filePath]
+ * is used:
+ *  - Built-in placeholder items reference a generated vector asset via [drawableRes].
+ *  - User-uploaded items ([isCustom] = true) point at a file copied into app-private
+ *    storage via [filePath].
  */
 data class ClothingItem(
     val id: String,
     val category: ClothingCategory,
     val displayName: String,
-    @DrawableRes val drawableRes: Int
-)
+    @DrawableRes val drawableRes: Int = 0,
+    val filePath: String? = null
+) {
+    val isCustom: Boolean get() = filePath != null
+}

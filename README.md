@@ -7,6 +7,36 @@ result. Built with **CameraX** + **ML Kit Pose Detection** + Kotlin, no Android
 Studio required to build (GitHub Actions workflow included, matching how you've
 been building your other projects).
 
+## v2 changes (fixes from device testing)
+
+1. **Tracking bug fixed** — garments were rendering in a fixed spot instead of
+   following the body. Root cause: `InputImage.getWidth()/getHeight()` from
+   ML Kit returns the *raw, unrotated* camera buffer dimensions, not the
+   dimensions of the upright frame the pose landmarks are actually expressed
+   in. On a portrait phone (rotation 90°/270°) that's a silent width/height
+   swap, which threw off every downstream coordinate mapping. Fixed in
+   `CameraPoseAnalyzer.kt` by computing the rotated dimensions explicitly.
+2. **More realistic placeholder art** — shirts, pants, and sunglasses now use
+   gradient shading, fold/crease shadows, seam and button details instead of
+   flat solid-color fills. This helps, but placeholder vector art will never
+   look fully real — see the upload feature below for the actual fix.
+3. **Upload your own clothing photos** — a "+ Add your own photo" button in
+   the sidebar (per category) opens the system image picker, copies the
+   image into the app's private storage, and adds it as a new wardrobe item
+   alongside the built-in ones. Long-press an uploaded item to remove it.
+
+## Getting genuinely realistic results
+
+The single biggest lever for realism is **what image you feed in**, not the
+rendering code. For the best results when uploading:
+- Use a **transparent-background PNG** cutout of the actual garment (e.g.
+  photograph the item flat or on a mannequin, then remove the background in
+  any photo editor or a free background-removal tool).
+- Roughly front-facing / laid flat works best, since the scaling math assumes
+  a straight-on garment shape.
+- A normal photo *with* a background will be pasted in as a rectangle,
+  including that background — it won't read as a clean garment overlay.
+
 ## How the AR works
 
 There are two broad approaches to "put clothes on a detected body":
@@ -39,19 +69,19 @@ The exact same renderer is reused for the **live preview overlay** and for
 
 ```
 app/src/main/java/com/hftx/bodyar/
-  MainActivity.kt          Activity: camera setup, sidebar wiring, capture button
+  MainActivity.kt          Activity: camera setup, sidebar wiring, capture button, upload flow
   CameraPoseAnalyzer.kt    CameraX ImageAnalysis.Analyzer running ML Kit pose detection
   PoseOverlayView.kt       Custom View drawing garments over the live preview
   PoseGarmentRenderer.kt   Core math: pose landmarks -> garment position/scale/rotation
   CaptureHelper.kt         Takes a full-res photo, composites garments, saves to gallery
-  ClothingItem.kt          Data model
-  ClothingRepository.kt    The 10 shirts / 10 pants / 8 sunglasses catalog
+  ClothingItem.kt          Data model (built-in resource OR uploaded file)
+  ClothingRepository.kt    Built-in catalog (10 shirts / 10 pants / 8 sunglasses) + upload storage
   ClothingAdapter.kt       RecyclerView adapter for the sidebar thumbnail grid
 
 app/src/main/res/
-  drawable/shirt_1..10.xml   Placeholder shirt artwork
-  drawable/pant_1..10.xml    Placeholder pant artwork
-  drawable/glass_1..8.xml    Placeholder sunglasses artwork
+  drawable/shirt_1..10.xml   Placeholder shirt artwork (gradient-shaded)
+  drawable/pant_1..10.xml    Placeholder pant artwork (gradient-shaded)
+  drawable/glass_1..8.xml    Placeholder sunglasses artwork (gradient lenses)
   layout/activity_main.xml   DrawerLayout: camera + overlay + sidebar
   layout/item_clothing.xml   Sidebar thumbnail cell
 
@@ -60,27 +90,20 @@ app/src/main/res/
 
 ## About the included clothing art
 
-To hand you a project that **runs end-to-end today**, all 28 wardrobe items
-(10 shirts, 10 pants, 8 sunglasses) are generated as simple flat-color vector
-silhouettes — not photoreal garment photos, since I can't generate/license
-real clothing photography inside this build. They're wired up completely (sidebar
-thumbnails, category filtering, live AR placement, capture) so you can see and
-test the whole pipeline immediately.
+All 28 built-in wardrobe items (10 shirts, 10 pants, 8 sunglasses) are
+generated as shaded vector silhouettes — not photos, since I can't
+generate/license real clothing photography inside this build. They're fully
+wired up (sidebar thumbnails, category filtering, live AR placement, capture)
+so the whole pipeline works immediately. For photoreal results, use the
+in-app upload feature described above, or replace `res/drawable/shirt_N.xml`
+etc. with your own PNGs of the same filename — no code changes needed either
+way, since `ClothingRepository` resolves built-ins by name and uploads by
+file path.
 
-**To get photoreal results**, swap the art for real assets:
-1. Get transparent-background PNG/WebP cutouts of shirts/pants/sunglasses
-   (front-facing, arms/legs roughly T-pose works best for the scaling math).
-2. Drop them into `res/drawable/` using the same filenames (`shirt_1.png`,
-   `pant_3.png`, `glass_5.png`, ...) — no code changes needed, since
-   `ClothingRepository` resolves them by name.
-3. You'll likely want to tweak the scale multipliers in
-   `PoseGarmentRenderer.kt` (e.g. `shoulderWidth * 2.25f`) to match your new
-   art's exact proportions — this is normal tuning for any pose-anchored AR
-   overlay and depends on how much empty margin your PNGs have.
-
-Adding more items (beyond 10/10/8) is just adding entries to the `shirtNames`
-/ `pantNames` / `glassNames` lists in `ClothingRepository.kt` plus a matching
-drawable.
+You'll likely want to tweak the scale multipliers in `PoseGarmentRenderer.kt`
+(e.g. `shoulderWidth * 2.25f`) to match new art's exact proportions — this is
+normal tuning for any pose-anchored AR overlay and depends on how much empty
+margin your images have.
 
 ## Building
 
@@ -98,7 +121,8 @@ generate the Gradle wrapper and sync automatically.
 
 Only `CAMERA` is required at runtime (requested on first launch). Saved
 photos go to `Pictures/BodyAR` via `MediaStore`, so no storage permission is
-needed on Android 10+.
+needed on Android 10+. Uploading a photo uses the system picker, which grants
+a temporary read URI — no storage permission needed for that either.
 
 ## Known limitations / good next steps
 
@@ -108,8 +132,11 @@ needed on Android 10+.
 - Occlusion isn't handled (e.g. an arm crossing in front of the torso will be
   drawn *under* the shirt overlay, not over it) — solving this well needs body
   segmentation masks (e.g. ML Kit Selfie Segmentation) composited with the
-  garment layer, which would be a solid v2 addition.
+  garment layer, which would be a solid v3 addition.
 - Tuning constants in `PoseGarmentRenderer.kt` were chosen for a person
   standing roughly upright, facing the camera — extreme poses/angles will
   need more sophisticated landmark logic (e.g. detecting side-on stance and
   switching to a profile-fit garment).
+- Uploaded images aren't background-removed automatically — see "Getting
+  genuinely realistic results" above.
+

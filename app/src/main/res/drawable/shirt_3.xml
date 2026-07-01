@@ -1,20 +1,54 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="200dp"
     android:height="240dp"
     android:viewportWidth="100"
     android:viewportHeight="120">
-    <!-- torso + sleeves -->
+
+    <!-- base torso + sleeves -->
+    <path android:pathData="M35,10 L20,0 L2,18 L14,34 L22,28 L22,115 L78,115 L78,28 L86,34 L98,18 L80,0 L65,10 C65,10 58,16 50,16 C42,16 35,10 35,10 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="15" android:startY="5"
+                android:endX="90" android:endY="118"
+                android:startColor="@color/shirt_3_light"
+                android:endColor="@color/shirt_3_dark" />
+        </aapt:attr>
+    </path>
+
+    <!-- center placket shading -->
     <path
-        android:fillColor="@color/shirt_3"
-        android:pathData="M35,10 L20,0 L2,18 L14,34 L22,28 L22,115 L78,115 L78,28 L86,34 L98,18 L80,0 L65,10 C65,10 58,16 50,16 C42,16 35,10 35,10 Z" />
+        android:fillColor="#22000000"
+        android:pathData="M48,16 L52,16 L52,115 L48,115 Z" />
+
+    <!-- fold shadow under sleeves -->
+    <path
+        android:fillColor="#26000000"
+        android:pathData="M14,34 L22,28 L22,48 L16,44 Z" />
+    <path
+        android:fillColor="#26000000"
+        android:pathData="M86,34 L78,28 L78,48 L84,44 Z" />
+
+    <!-- soft body highlight -->
+    <path
+        android:fillColor="#22FFFFFF"
+        android:pathData="M30,30 L40,30 L36,100 L30,100 Z" />
+
+    <!-- buttons -->
+    <path android:fillColor="#33FFFFFF" android:pathData="M48.5,22 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0" />
+    <path android:fillColor="#33FFFFFF" android:pathData="M48.5,40 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0" />
+    <path android:fillColor="#33FFFFFF" android:pathData="M48.5,58 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0" />
+    <path android:fillColor="#33FFFFFF" android:pathData="M48.5,76 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0" />
+
     <!-- collar -->
     <path
         android:fillColor="#33000000"
         android:pathData="M40,8 C43,14 57,14 60,8 L57,4 C54,9 46,9 43,4 Z" />
     <path
-        android:fillColor="#33FFFFFF"
+        android:fillColor="#2AFFFFFF"
         android:pathData="M22,50 L78,50 L78,58 L22,58 Z" />
     <path
-        android:fillColor="#33FFFFFF"
+        android:fillColor="#2AFFFFFF"
         android:pathData="M22,75 L78,75 L78,83 L22,83 Z" />
 </vector>

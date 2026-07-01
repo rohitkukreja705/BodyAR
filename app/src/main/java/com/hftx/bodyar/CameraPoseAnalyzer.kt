@@ -37,10 +37,17 @@ class CameraPoseAnalyzer(
         val rotation = imageProxy.imageInfo.rotationDegrees
         val inputImage = InputImage.fromMediaImage(mediaImage, rotation)
 
-        // If the frame is rotated 90/270, width & height are swapped relative
-        // to the raw buffer - InputImage exposes the already-corrected values.
-        val width = inputImage.width
-        val height = inputImage.height
+        // IMPORTANT: InputImage.getWidth()/getHeight() return the RAW buffer
+        // dimensions (e.g. 1280x720 landscape sensor output), NOT the
+        // dimensions of the upright image the pose landmarks are actually
+        // expressed in. On a portrait phone the sensor buffer is landscape
+        // and rotationDegrees is typically 90/270, so we have to swap
+        // width/height ourselves - otherwise every downstream coordinate
+        // mapping (CoordinateMapper) is computed against the wrong aspect
+        // ratio and garments render detached from the tracked body.
+        val swapped = rotation == 90 || rotation == 270
+        val width = if (swapped) mediaImage.height else mediaImage.width
+        val height = if (swapped) mediaImage.width else mediaImage.height
 
         detector.process(inputImage)
             .addOnSuccessListener { pose -> onPoseDetected(pose, width, height) }

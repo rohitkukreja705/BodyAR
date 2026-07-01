@@ -2,6 +2,7 @@ package com.hftx.bodyar
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.View
@@ -22,20 +23,20 @@ class PoseOverlayView @JvmOverloads constructor(
     private var pantBitmap: Bitmap? = null
     private var glassesBitmap: Bitmap? = null
 
-    private val bitmapCache = HashMap<Int, Bitmap>()
+    private val bitmapCache = HashMap<String, Bitmap>()
 
-    fun setSelectedShirt(res: Int?) {
-        shirtBitmap = res?.let { loadBitmap(it) }
+    fun setSelectedShirt(item: ClothingItem?) {
+        shirtBitmap = item?.let { loadBitmap(it) }
         invalidate()
     }
 
-    fun setSelectedPant(res: Int?) {
-        pantBitmap = res?.let { loadBitmap(it) }
+    fun setSelectedPant(item: ClothingItem?) {
+        pantBitmap = item?.let { loadBitmap(it) }
         invalidate()
     }
 
-    fun setSelectedGlasses(res: Int?) {
-        glassesBitmap = res?.let { loadBitmap(it) }
+    fun setSelectedGlasses(item: ClothingItem?) {
+        glassesBitmap = item?.let { loadBitmap(it) }
         invalidate()
     }
 
@@ -63,16 +64,23 @@ class PoseOverlayView @JvmOverloads constructor(
         PoseGarmentRenderer.draw(canvas, p, mapper, shirtBitmap, pantBitmap, glassesBitmap)
     }
 
-    private fun loadBitmap(res: Int): Bitmap? {
-        bitmapCache[res]?.let { return it }
-        val drawable = ContextCompat.getDrawable(context, res) ?: return null
-        val w = if (drawable.intrinsicWidth > 0) drawable.intrinsicWidth else 200
-        val h = if (drawable.intrinsicHeight > 0) drawable.intrinsicHeight else 200
-        val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, w, h)
-        drawable.draw(canvas)
-        bitmapCache[res] = bitmap
+    private fun loadBitmap(item: ClothingItem): Bitmap? {
+        bitmapCache[item.id]?.let { return it }
+
+        val bitmap: Bitmap? = if (item.isCustom) {
+            item.filePath?.let { BitmapFactory.decodeFile(it) }
+        } else {
+            val drawable = ContextCompat.getDrawable(context, item.drawableRes) ?: return null
+            val w = if (drawable.intrinsicWidth > 0) drawable.intrinsicWidth else 200
+            val h = if (drawable.intrinsicHeight > 0) drawable.intrinsicHeight else 200
+            val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bmp)
+            drawable.setBounds(0, 0, w, h)
+            drawable.draw(canvas)
+            bmp
+        }
+
+        if (bitmap != null) bitmapCache[item.id] = bitmap
         return bitmap
     }
 }

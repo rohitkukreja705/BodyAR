@@ -1,22 +1,50 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="200dp"
     android:height="280dp"
     android:viewportWidth="100"
     android:viewportHeight="140">
+
     <!-- waistband -->
-    <path
-        android:fillColor="@color/pant_4"
-        android:pathData="M10,0 L90,0 L88,20 L12,20 Z" />
+    <path android:pathData="M10,0 L90,0 L88,20 L12,20 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="10" android:startY="0" android:endX="90" android:endY="20"
+                android:startColor="@color/pant_4_light" android:endColor="@color/pant_4_dark" />
+        </aapt:attr>
+    </path>
+
     <!-- left leg -->
-    <path
-        android:fillColor="@color/pant_4"
-        android:pathData="M12,20 L48,20 L46,138 L30,138 L26,60 L18,60 Z" />
+    <path android:pathData="M12,20 L48,20 L46,138 L30,138 L26,60 L18,60 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="12" android:startY="20" android:endX="46" android:endY="138"
+                android:startColor="@color/pant_4_light" android:endColor="@color/pant_4_dark" />
+        </aapt:attr>
+    </path>
+
     <!-- right leg -->
-    <path
-        android:fillColor="@color/pant_4"
-        android:pathData="M52,20 L88,20 L82,60 L74,60 L70,138 L54,138 Z" />
+    <path android:pathData="M52,20 L88,20 L82,60 L74,60 L70,138 L54,138 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="52" android:startY="20" android:endX="88" android:endY="138"
+                android:startColor="@color/pant_4_dark" android:endColor="@color/pant_4_light" />
+        </aapt:attr>
+    </path>
+
     <!-- center seam shadow -->
-    <path
-        android:fillColor="#26000000"
-        android:pathData="M48,20 L52,20 L52,60 L48,60 Z" />
+    <path android:fillColor="#33000000" android:pathData="M48,20 L52,20 L52,60 L48,60 Z" />
+
+    <!-- belt loops -->
+    <path android:fillColor="#40000000" android:pathData="M20,0 L23,0 L23,4 L20,4 Z" />
+    <path android:fillColor="#40000000" android:pathData="M48,0 L51,0 L51,4 L48,4 Z" />
+    <path android:fillColor="#40000000" android:pathData="M77,0 L80,0 L80,4 L77,4 Z" />
+
+    <!-- pocket stitching -->
+    <path android:fillColor="#33000000" android:pathData="M16,24 L30,24 L29,30 L17,30 Z" />
+    <path android:fillColor="#33000000" android:pathData="M70,24 L84,24 L83,30 L71,30 Z" />
+
+    <!-- knee crease shading -->
+    <path android:fillColor="#22000000" android:pathData="M24,72 L40,72 L39,78 L25,78 Z" />
+    <path android:fillColor="#22000000" android:pathData="M60,72 L76,72 L75,78 L61,78 Z" />
+
+    <!-- leg highlight -->
+    <path android:fillColor="#1AFFFFFF" android:pathData="M16,22 L22,22 L20,130 L16,130 Z" />
 </vector>

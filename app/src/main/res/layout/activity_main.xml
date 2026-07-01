@@ -153,6 +153,28 @@
                 android:text="@string/sunglasses" />
         </LinearLayout>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_add_photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="+ Add your own photo"
+            app:icon="@drawable/ic_camera"
+            app:iconTint="@color/black"
+            app:backgroundTint="@color/accent"
+            android:textColor="@color/black"
+            android:textAllCaps="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="Tip: transparent PNG cutouts of real garments look best. Long-press an upload to remove it."
+            android:textColor="@color/text_secondary"
+            android:textSize="10sp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_items"
             android:layout_width="match_parent"
